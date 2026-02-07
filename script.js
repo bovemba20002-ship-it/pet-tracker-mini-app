@@ -48,29 +48,56 @@ function showPetDetails(index) {
 }
 
 function addPet() {
-    const name = prompt("Введите имя животного:");
-    if (name) {
-        pets.push({ name, procedures: [] });
-        saveData();
-        showPets();
-    }
+    // Показываем форму для ввода имени животного
+    const formHtml = `
+        <form id="add-pet-form">
+            <input type="text" id="pet-name-input" placeholder="Имя животного" required />
+            <button type="submit">Добавить</button>
+            <button type="button" id="cancel-add-pet">Отмена</button>
+        </form>
+    `;
+    petsListEl.innerHTML = formHtml;
+
+    document.getElementById('add-pet-form').onsubmit = function(e) {
+        e.preventDefault();
+        const name = document.getElementById('pet-name-input').value.trim();
+        if (name) {
+            pets.push({ name, procedures: [] });
+            saveData();
+            showPets();
+        }
+    };
+
+    document.getElementById('cancel-add-pet').onclick = showPets;
 }
 
 function addProcedure(index) {
-    const procName = prompt("Название процедуры:");
-    const dateStr = prompt("Дата процедуры (ГГГГ-ММ-ДД):");
-    const reminder = prompt("Напоминать за сколько дней?");
+    const formHtml = `
+        <form id="add-proc-form">
+            <input type="text" id="proc-name-input" placeholder="Название процедуры" required />
+            <input type="date" id="proc-date-input" required />
+            <input type="number" id="proc-reminder-input" placeholder="Напоминать за N дней" required min="1"/>
+            <button type="submit">Добавить процедуру</button>
+            <button type="button" id="cancel-add-proc">Отмена</button>
+        </form>
+    `;
+    proceduresListEl.innerHTML = formHtml;
 
-    if (procName && dateStr && reminder) {
-        const procedure = {
-            name: procName,
-            date: dateStr,
-            reminder: parseInt(reminder)
-        };
-        pets[index].procedures.push(procedure);
-        saveData();
-        showPetDetails(index);
-    }
+    document.getElementById('add-proc-form').onsubmit = function(e) {
+        e.preventDefault();
+        const name = document.getElementById('proc-name-input').value.trim();
+        const date = document.getElementById('proc-date-input').value;
+        const reminder = parseInt(document.getElementById('proc-reminder-input').value);
+
+        if (name && date && reminder) {
+            const procedure = { name, date, reminder };
+            pets[index].procedures.push(procedure);
+            saveData();
+            showPetDetails(index);
+        }
+    };
+
+    document.getElementById('cancel-add-proc').onclick = () => showPetDetails(index);
 }
 
 document.getElementById('add-pet-btn').onclick = addPet;
