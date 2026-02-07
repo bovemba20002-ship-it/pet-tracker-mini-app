@@ -2,6 +2,7 @@
 const tg = window.Telegram.WebApp;
 
 tg.ready();
+tg.expand(); // Раскрывает приложение на весь экран
 
 // Инициализация данных
 let pets = JSON.parse(localStorage.getItem('pets')) || [];
@@ -54,22 +55,8 @@ function showPetDetails(index) {
         proceduresListEl.appendChild(li);
     });
 
-    // Убедимся, что кнопки видны
-    const backBtn = document.getElementById('back-btn');
-    const addProcBtn = document.getElementById('add-procedure-btn');
-
-    if (backBtn) {
-        backBtn.onclick = showPets;
-        backBtn.style.display = 'block';
-    }
-
-    if (addProcBtn) {
-        addProcBtn.onclick = () => addProcedure(index);
-        addProcBtn.style.display = 'block'; // Убедимся, что кнопка видна
-    } else {
-        console.error("Кнопка 'Добавить процедуру' не найдена в DOM!");
-        alert("Ошибка: кнопка 'Добавить процедуру' не найдена.");
-    }
+    document.getElementById('back-btn').onclick = showPets;
+    document.getElementById('add-procedure-btn').onclick = () => addProcedure(index);
 }
 
 function addProcedure(index) {
