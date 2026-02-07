@@ -2,7 +2,7 @@
 const tg = window.Telegram.WebApp;
 
 tg.ready();
-tg.expand(); // Раскрывает приложение на весь экран
+tg.expand();
 
 // Инициализация данных
 let pets = JSON.parse(localStorage.getItem('pets')) || [];
@@ -23,6 +23,7 @@ function formatDate(dateString) {
 }
 
 function showPets() {
+    console.log("showPets вызван");
     container.style.display = 'block';
     petDetailsEl.classList.add('hidden');
 
@@ -37,10 +38,19 @@ function showPets() {
 }
 
 function showPetDetails(index) {
+    console.log("showPetDetails вызван для индекса:", index);
+    
     const pet = pets[index];
     petNameEl.textContent = pet.name;
+
+    // Прячем основной контейнер
     container.style.display = 'none';
+
+    // Показываем карточку животного
     petDetailsEl.classList.remove('hidden');
+
+    // Принудительно устанавливаем display: block, чтобы убедиться, что div виден
+    petDetailsEl.style.display = 'block';
 
     proceduresListEl.innerHTML = '';
 
@@ -55,11 +65,28 @@ function showPetDetails(index) {
         proceduresListEl.appendChild(li);
     });
 
-    document.getElementById('back-btn').onclick = showPets;
-    document.getElementById('add-procedure-btn').onclick = () => addProcedure(index);
+    // Находим кнопку "Назад" и "Добавить процедуру"
+    const backBtn = document.getElementById('back-btn');
+    const addProcBtn = document.getElementById('add-procedure-btn');
+
+    if (backBtn) {
+        backBtn.onclick = showPets;
+        console.log("Кнопка 'Назад' найдена и привязана");
+    } else {
+        console.error("Кнопка 'Назад' не найдена!");
+    }
+
+    if (addProcBtn) {
+        addProcBtn.onclick = () => addProcedure(index);
+        addProcBtn.style.display = 'block'; // Принудительно показываем кнопку
+        console.log("Кнопка 'Добавить процедуру' найдена и привязана");
+    } else {
+        console.error("Кнопка 'Добавить процедуру' не найдена в DOM!");
+    }
 }
 
 function addProcedure(index) {
+    console.log("addProcedure вызван для индекса:", index);
     const formHtml = `
         <form id="add-proc-form">
             <input type="text" id="proc-name-input" placeholder="Название процедуры" required />
