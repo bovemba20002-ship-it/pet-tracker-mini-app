@@ -54,16 +54,21 @@ function showPetDetails(index) {
         proceduresListEl.appendChild(li);
     });
 
-    // Восстанавливаем кнопки "Назад" и "Добавить процедуру"
-    document.getElementById('back-btn').onclick = showPets;
-
-    // Убедимся, что кнопка "Добавить процедуру" существует и работает
+    // Убедимся, что кнопки видны
+    const backBtn = document.getElementById('back-btn');
     const addProcBtn = document.getElementById('add-procedure-btn');
+
+    if (backBtn) {
+        backBtn.onclick = showPets;
+        backBtn.style.display = 'block';
+    }
+
     if (addProcBtn) {
         addProcBtn.onclick = () => addProcedure(index);
-        addProcBtn.style.display = 'block'; // Убедимся, что она видна
+        addProcBtn.style.display = 'block'; // Убедимся, что кнопка видна
     } else {
-        console.error("Кнопка 'Добавить процедуру' не найдена!");
+        console.error("Кнопка 'Добавить процедуру' не найдена в DOM!");
+        alert("Ошибка: кнопка 'Добавить процедуру' не найдена.");
     }
 }
 
